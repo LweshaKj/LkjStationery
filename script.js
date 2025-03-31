@@ -51,3 +51,15 @@ function displayImages(files) {
 
 // Fetch images when the page loads
 window.onload = fetchImageFiles;
+const hoverButton = document.getElementById("hoverButton");
+const hoverDiv = document.getElementById("hoverDiv");
+
+// Show div when hovering over button
+hoverButton.addEventListener("mouseenter", () => {
+    hoverDiv.style.display = "block";
+});
+
+// Hide div when not hovering
+hoverButton.addEventListener("mouseleave", () => {
+    hoverDiv.style.display = "none";
+});
