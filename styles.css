@@ -95,3 +95,82 @@ footer {
     width: 100%;
   }
 }
+/* Container box */
+.container {
+    text-align: center;
+}
+
+/* Button styling */
+.btn {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 150px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+/* Hidden div */
+.hidden-box {
+    display: none;
+    margin-top: 15px;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+/* Container box */
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Title */
+.title {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+/* Input fields */
+.input-field {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    width: 90%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Button styling */
+.btn {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+/* Message styling */
+.message {
+    margin-top: 10px;
+    font-weight: bold;
+}
