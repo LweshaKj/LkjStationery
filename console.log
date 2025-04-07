@@ -1,0 +1,55 @@
+async function promptForToken() {
+  const enteredToken = prompt("Enter security token:");
+  const token = await fetchTokenFromGitHub();
+
+  console.log("Entered token: ", enteredToken);
+  console.log("Fetched token: ", token);
+
+  if (enteredToken === token) {
+    alert("Token validated successfully!");
+    enableForms();
+  } else {
+    alert("Invalid token. Try again.");
+  }
+}
+
+function enableForms() {
+  console.log("Enabling forms...");
+  document.getElementById('productForm').disabled = false;
+  document.getElementById('logoForm').disabled = false;
+}
+
+document.getElementById('productForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  console.log("Product form submitted");
+  const name = document.getElementById('productName').value;
+  const file = document.getElementById('productImage').files[0];
+  const msg = document.getElementById('productMessage');
+  
+  if (!file) {
+    console.log("No file selected.");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onloadend = async () => {
+    const content = reader.result.split(',')[1];
+    const filePath = `products/${name}_${Date.now()}_${file.name}`;
+    
+    console.log("Uploading file:", filePath);
+
+    const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${filePath}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: `Add product: ${file.name}`,
+        content
+      })
+    });
+
+    msg.textContent = res.ok ? 'Product uploaded!' : 'Upload failed.';
+    document.getElementById('productForm').reset();
+  };
+
+  reader.readAsDataURL(file);
+});
