@@ -69,10 +69,12 @@
 
     /* Updated Products & Logos Layout */
     .products {
-      display: inline-block;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       padding: 20px;
       margin: auto;
-      max-width: 1200px;
+      max-width: 98%;
       gap: 20px;
     }
 
@@ -83,6 +85,7 @@
       text-align: center;
       padding: 10px;
       width: 220px;
+      display:inline-blocks
       animation: fadeIn 0.5s ease-in-out;
     }
 
