@@ -139,24 +139,48 @@
     .social-links a {
       margin: 0 10px;
       text-decoration: none;
-      color: #1e40af;  /* Set a consistent color for text */
       font-weight: bold;
       transition: color 0.3s, transform 0.3s;
     }
 
     .social-links a i {
       margin-right: 8px;
-      font-size: 25px;  /* Increase icon size */
-      color: #1e40af;  /* Ensure icon color matches link color */
+      font-size: 25px;
+      transition: color 0.3s;
     }
 
     .social-links a:hover {
-      color: #0ea5e9;
       transform: scale(1.1);
     }
 
     .social-links a:active {
-      color: #0a58ca;  /* Set a color when icon is clicked */
+      transform: scale(1);
+    }
+
+    /* Specific social media icon colors */
+    .social-links .facebook {
+      color: #1877f2;  /* Facebook blue */
+    }
+
+    .social-links .whatsapp {
+      color: #25d366;  /* WhatsApp green */
+    }
+
+    .social-links .tiktok {
+      color: #69c9d0;  /* TikTok teal */
+    }
+
+    /* Hover effects for each specific color */
+    .social-links .facebook:hover {
+      color: #0a5d9f;  /* Darker blue for Facebook on hover */
+    }
+
+    .social-links .whatsapp:hover {
+      color: #128c7e;  /* Darker green for WhatsApp on hover */
+    }
+
+    .social-links .tiktok:hover {
+      color: #04b3d6;  /* Darker teal for TikTok on hover */
     }
 
     @media (max-width: 768px) {
@@ -224,9 +248,9 @@
 
       <h3>Visit us on these social media accounts:</h3>
       <div class="social-links">
-        <a href="https://web.facebook.com/profile.php?id=61568308430341" target="_blank" title="Facebook"><i class="fab fa-facebook"></i> Facebook</a> |
-        <a href="https://wa.me/25574708773" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i> WhatsApp</a> |
-        <a href="https://www.tiktok.com/@lweshakj1" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i> TikTok</a>
+        <a href="https://web.facebook.com/profile.php?id=61568308430341" target="_blank" title="Facebook" class="facebook"><i class="fab fa-facebook"></i> Facebook</a> |
+        <a href="https://wa.me/25574708773" target="_blank" title="WhatsApp" class="whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a> |
+        <a href="https://www.tiktok.com/@lweshakj1" target="_blank" title="TikTok" class="tiktok"><i class="fab fa-tiktok"></i> TikTok</a>
       </div>
     </section>
 
