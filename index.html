@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>LweshaKj</title>
+  <!-- Font Awesome CDN for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -78,17 +80,16 @@
       gap: 20px;
     }
 
-.product {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  padding: 10px;
-  width: 220px;
-  display: inline-block;
-  animation: fadeIn 0.5s ease-in-out;
-}
-
+    .product {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      padding: 10px;
+      width: 220px;
+      display: inline-block;
+      animation: fadeIn 0.5s ease-in-out;
+    }
 
     .product img {
       width: 100%;
@@ -127,6 +128,30 @@
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
+    }
+
+    .social-links {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    .social-links a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #1e40af;
+      font-weight: bold;
+      transition: color 0.3s, transform 0.3s;
+    }
+
+    .social-links a i {
+      margin-right: 8px;
+      font-size: 20px;
+    }
+
+    .social-links a:hover {
+      color: #0ea5e9;
+      transform: scale(1.1);
     }
 
     @media (max-width: 768px) {
@@ -173,8 +198,9 @@
       <h2>Welcome to LweshaKj's Stationery</h2>
       <p>Use the navigation above to see products and logos.</p>
       <p><strong>Address:</strong> <a href="https://www.google.com/maps?q=RVH9+MQ6,+Ihanda" target="_blank">RVH9+MQ6, Ihanda</a></p>
-      <p><strong>Phone:</strong> <a href="tel:+255747708773">0747 708 773</a></p>
-      You can contact us via phone number above so that we can create the logo that satisfy your needs
+      <p><strong>Phone:</strong> <a href="tel:+254747708773">0747 708 773</a></p>
+      <p>You can contact us via phone number above so that we can create the logo that satisfies your needs.</p>
+
       <h3>Our Services:</h3>
       <ul>
         <li>Stationery Supplies</li>
@@ -190,6 +216,13 @@
         <li>Posters and Banners</li>
         <li>Art and Craft Supplies</li>
       </ul>
+
+      <h3>Visit us on these social media accounts:</h3>
+      <div class="social-links">
+        <a href="https://web.facebook.com/profile.php?id=61568308430341" target="_blank" title="Facebook"><i class="fa fa-facebook"></i> Facebook</a> |
+        <a href="https://wa.me/25574708773" target="_blank" title="WhatsApp"><i class="fa fa-whatsapp"></i> WhatsApp</a> |
+        <a href="https://www.tiktok.com/@lweshakj1" target="_blank" title="TikTok"><i class="fa fa-tiktok"></i> TikTok</a>
+      </div>
     </section>
 
     <div id="loader" class="spinner" style="display:none;"></div>
@@ -236,15 +269,13 @@
             }
           });
         })
-        .catch(err => {
+        .catch(() => {
           loader.style.display = 'none';
-          console.error('Fetch error:', err);
+          alert('Error loading data');
         });
     }
 
-    window.onload = () => {
-      fetchImages('products', 'viewProducts');
-    };
+    window.onload = () => showSection('dashboard');
   </script>
 </body>
 </html>
