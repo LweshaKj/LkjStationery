@@ -139,19 +139,24 @@
     .social-links a {
       margin: 0 10px;
       text-decoration: none;
-      color: #1e40af;
+      color: #1e40af;  /* Set a consistent color for text */
       font-weight: bold;
       transition: color 0.3s, transform 0.3s;
     }
 
     .social-links a i {
       margin-right: 8px;
-      font-size: 20px;
+      font-size: 25px;  /* Increase icon size */
+      color: #1e40af;  /* Ensure icon color matches link color */
     }
 
     .social-links a:hover {
       color: #0ea5e9;
       transform: scale(1.1);
+    }
+
+    .social-links a:active {
+      color: #0a58ca;  /* Set a color when icon is clicked */
     }
 
     @media (max-width: 768px) {
