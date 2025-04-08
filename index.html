@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>LweshaKj</title>
   <style>
     body {
@@ -48,7 +48,6 @@
       background-color: #1e40af;
     }
 
-    /* Hamburger Icon for small screens */
     .navbar .toggle-btn {
       display: none;
       font-size: 30px;
@@ -74,10 +73,7 @@
       gap: 20px;
       padding: 20px;
       margin: auto;
-    }
-    @media(max-width:768px){
-      .products{
-        display:inline-block;
+      max-width: 1200px;
     }
 
     .product {
@@ -86,6 +82,7 @@
       box-shadow: 0 0 8px rgba(0,0,0,0.1);
       text-align: center;
       padding: 10px;
+      animation: fadeIn 0.5s ease-in-out;
     }
 
     .product img {
@@ -107,28 +104,47 @@
       border-radius: 8px;
     }
 
-    /* Media Queries for responsive design */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .spinner {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #1e40af;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: 30px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     @media (max-width: 768px) {
-      /* Hide the navbar items on small screens */
       .navbar ul {
         display: none;
         flex-direction: column;
         align-items: center;
       }
 
-      /* Show the toggle button */
       .navbar .toggle-btn {
         display: block;
       }
 
-      /* When navbar is active, show the items */
       .navbar.active ul {
         display: flex;
       }
 
-      /* Arrange products vertically for small screens */
       .products {
         display: block;
+      }
+
+      .product {
+        margin-bottom: 20px;
       }
     }
   </style>
@@ -153,6 +169,13 @@
       <p><strong>Address:</strong> <a href="https://www.google.com/maps?q=RVH9+MQ6,+Ihanda" target="_blank">RVH9+MQ6, Ihanda</a></p>
       <p><strong>Phone:</strong> <a href="tel:+254747708773">0747 708 773</a></p>
       You can contact us via phone number above so that we can create the logo that satisfy your needs
+
+      <h3>Upload to GitHub (Coming Soon)</h3>
+      <form onsubmit="event.preventDefault(); alert('Feature coming soon!')">
+        <input type="file" name="file" />
+        <button type="submit">Upload</button>
+      </form>
+
       <h3>Our Services:</h3>
       <ul>
         <li>Stationery Supplies</li>
@@ -170,52 +193,56 @@
       </ul>
     </section>
 
-    <section id="viewProducts" class="products" style="display:none"></section>
+    <div id="loader" class="spinner" style="display:none;"></div>
 
+    <section id="viewProducts" class="products" style="display:none"></section>
     <section id="viewLogos" class="products" style="display:none"></section>
   </main>
 
   <script>
     const user = 'LweshaKj';
-    const repo = 'LkjStationery';  // Updated repository name
-    const branch = 'master';  // Branch name
+    const repo = 'LkjStationery';
+    const branch = 'master';
 
-    // Function to toggle the navigation menu on small screens
     function toggleMenu() {
       document.querySelector('.navbar').classList.toggle('active');
     }
 
-    // Function to show the appropriate section based on user navigation
     function showSection(id) {
       document.querySelectorAll('main > section').forEach(sec => sec.style.display = 'none');
       document.getElementById(id).style.display = 'block';
+
       if (id === 'viewProducts') fetchImages('products', 'viewProducts');
       if (id === 'viewLogos') fetchImages('logos', 'viewLogos');
     }
 
-    // Function to fetch and display images from GitHub repository
     function fetchImages(folder, containerId) {
       const apiUrl = `https://api.github.com/repos/${user}/${repo}/contents/${folder}?ref=${branch}`;
+      const loader = document.getElementById('loader');
+      loader.style.display = 'block';
+
       fetch(apiUrl)
         .then(res => res.json())
         .then(data => {
+          loader.style.display = 'none';
           const container = document.getElementById(containerId);
-          container.innerHTML = ''; // Clear the container before adding new images
+          container.innerHTML = '';
           data.forEach(file => {
             if (file.type === 'file' && /\.(jpg|jpeg|png|gif)$/i.test(file.name)) {
               const div = document.createElement('div');
               div.classList.add('product');
-              // Remove file extension using regex and display the name without it
               const nameWithoutExtension = file.name.replace(/\.[^/.]+$/, "");
               div.innerHTML = `<img src="${file.download_url}" alt="${file.name}"><p>${nameWithoutExtension}</p>`;
               container.appendChild(div);
             }
           });
         })
-        .catch(err => console.error('Fetch error:', err));
+        .catch(err => {
+          loader.style.display = 'none';
+          console.error('Fetch error:', err);
+        });
     }
 
-    // Load products by default when the page loads
     window.onload = () => {
       fetchImages('products', 'viewProducts');
     };
