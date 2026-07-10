@@ -430,8 +430,16 @@
     
       document.querySelectorAll('main > section').forEach(sec => sec.style.display = 'none');
     
-      document.getElementById('productSearch').style.display = 'none';
-    
+       document.getElementById('productSearch').style.display = 'none';
+      
+      const input = document.getElementById("searchInput");
+      
+      if(input){
+      
+          input.value = "";
+      
+      }
+          
       document.getElementById(id).style.display = 'block';
     
       if (id === 'viewProducts') {
