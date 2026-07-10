@@ -413,7 +413,6 @@
 </div>
 
 <!-- Products -->
-<section id="viewProducts" class="products" style="display:none"></section>
     <section id="viewProducts" class="products" style="display:none"></section>
     <section id="viewLogos" class="products" style="display:none"></section>
   </main>
@@ -457,27 +456,47 @@
       loader.style.display = 'block';
 
       fetch(apiUrl)
-        .then(res => res.json())
-        .then(data => {
-          loader.style.display = 'none';
-          const container = document.getElementById(containerId);
-          container.innerHTML = '';
-          data.forEach(file => {
-            if (file.type === 'file' && /\.(jpg|jpeg|png|gif)$/i.test(file.name)) {
-              const div = document.createElement('div');
-              div.classList.add('product');
-              const nameWithoutExtension = file.name.replace(/\.[^/.]+$/, "");
-              div.innerHTML = `<img src="${file.download_url}" alt="${file.name}"><p>${nameWithoutExtension}</p>`;
-              container.appendChild(div);
-            }
-          });
-        })
+          .then(res => res.json())
+          .then(data => {
+          
+              loader.style.display = 'none';
+          
+              const container = document.getElementById(containerId);
+          
+              container.innerHTML = '';
+          
+              data.forEach(file => {
+          
+                  if (file.type === 'file' && /\.(jpg|jpeg|png|gif)$/i.test(file.name)) {
+          
+                      const div = document.createElement('div');
+          
+                      div.classList.add('product');
+          
+                      const nameWithoutExtension =
+                          file.name.replace(/\.[^/.]+$/, "");
+          
+                      div.innerHTML = `
+                          <img src="${file.download_url}" alt="${file.name}">
+                          <p>${nameWithoutExtension}</p>
+                      `;
+          
+                      container.appendChild(div);
+          
+                  }
+          
+              });
+          
+              // These two lines belong here
+              document.getElementById("showingProducts").textContent =
+                  container.querySelectorAll(".product").length;
+          
+              enableSearch();
+          
+          })
         .catch(() => {
           loader.style.display = 'none';
           alert('Error loading data');
-          enableSearch();
-          document.getElementById("showingProducts").textContent =
-          container.querySelectorAll(".product").length;
         });
     }
     function enableSearch(){
