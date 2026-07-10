@@ -428,11 +428,27 @@
     }
 
     function showSection(id) {
+    
       document.querySelectorAll('main > section').forEach(sec => sec.style.display = 'none');
+    
+      document.getElementById('productSearch').style.display = 'none';
+    
       document.getElementById(id).style.display = 'block';
-
-      if (id === 'viewProducts') fetchImages('products', 'viewProducts');
-      if (id === 'viewLogos') fetchImages('logos', 'viewLogos');
+    
+      if (id === 'viewProducts') {
+    
+          document.getElementById('productSearch').style.display = 'block';
+    
+          fetchImages('products', 'viewProducts');
+    
+      }
+    
+      if (id === 'viewLogos') {
+    
+          fetchImages('logos', 'viewLogos');
+    
+      }
+    
     }
 
     function fetchImages(folder, containerId) {
@@ -459,8 +475,52 @@
         .catch(() => {
           loader.style.display = 'none';
           alert('Error loading data');
+          enableSearch();
+          document.getElementById("showingProducts").textContent =
+          container.querySelectorAll(".product").length;
         });
     }
+    function enableSearch(){
+
+    const input = document.getElementById("searchInput");
+
+    input.onkeyup = function(){
+
+        const value = this.value.toLowerCase();
+
+        let count = 0;
+
+        document.querySelectorAll("#viewProducts .product").forEach(product=>{
+
+            const text = product.innerText.toLowerCase();
+
+            if(text.includes(value)){
+
+                product.style.display="inline-block";
+
+                count++;
+
+            }else{
+
+                product.style.display="none";
+
+            }
+
+        });
+
+        document.getElementById("showingProducts").textContent = count;
+
+    };
+
+    document.getElementById("clearSearch").onclick=function(){
+
+        input.value="";
+
+        input.dispatchEvent(new Event("keyup"));
+
+    };
+
+}
 
     window.onload = () => showSection('dashboard');
   </script>
