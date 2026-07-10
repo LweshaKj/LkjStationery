@@ -445,12 +445,13 @@
       
       const input = document.getElementById("searchInput");
       
-      if(input){
-      
+      if (input) {
           input.value = "";
       
+          document.querySelectorAll("#viewProducts .product").forEach(product => {
+              product.style.display = "";
+          });
       }
-          
       document.getElementById(id).style.display = 'block';
       // Remove active class from all menu links
       document.querySelectorAll(".navbar a").forEach(link => {
@@ -474,13 +475,16 @@
     
       }
     
-      if (id === 'viewLogos') {
-    
-          fetchImages('logos', 'viewLogos');
-    
-      }
-    
-    }
+        if (id === 'viewLogos') {
+        
+            fetchImages('logos', 'viewLogos');
+        
+        }
+        
+        // Close mobile menu
+        document.querySelector(".navbar").classList.remove("active");
+        
+        }
 
     function fetchImages(folder, containerId) {
       const apiUrl = `https://api.github.com/repos/${user}/${repo}/contents/${folder}?ref=${branch}`;
