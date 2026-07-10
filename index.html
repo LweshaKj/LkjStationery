@@ -18,9 +18,12 @@
     header {
       background: #1e293b;
       color: white;
-      padding: 20px;
+      padding:15px 30px;
       text-align: center;
-      position: relative;
+      position:sticky;
+      top:0;
+      z-index:1000;
+      box-shadow:0 3px 15px rgba(0,0,0,.2);
     }
 
     .navbar ul {
@@ -37,18 +40,26 @@
       margin: 0 10px;
     }
 
-    .navbar ul li a {
-      display: block;
-      color: white;
-      text-align: center;
-      padding: 14px 20px;
-      text-decoration: none;
-      transition: background 0.3s;
+    .navbar ul li a{
+    
+        border-radius:8px;
+        transition:.3s;
+    
     }
-
-    .navbar ul li a:hover {
-      background-color: #1e40af;
+    
+    .navbar ul li a:hover{
+    
+        background:#2563eb;
+        transform:translateY(-2px);
+    
     }
+      .navbar ul li a.active{
+  
+      background:#2563eb;
+  
+      font-weight:bold;
+  
+  }
 
     .navbar .toggle-btn {
       display: none;
@@ -276,7 +287,7 @@
 </head>
 <body>
   <header>
-    <h1>LweshaKj's Stationery</h1>
+    <h1><i class="fas fa-store"></i> LweshaKj's Stationery</h1>
     <nav class="navbar">
       <span class="toggle-btn" onclick="toggleMenu()">☰</span>
       <ul>
