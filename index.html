@@ -477,7 +477,7 @@
                           file.name.replace(/\.[^/.]+$/, "");
           
                       div.innerHTML = `
-                          <img src="${file.download_url}" alt="${file.name}">
+                          <img src="${file.download_url}" alt="${file.name}" loading="lazy">
                           <p>${nameWithoutExtension}</p>
                       `;
           
@@ -545,6 +545,7 @@
         
         document.getElementById("showingProducts").textContent =
         document.querySelectorAll("#viewProducts .product").length;
+        input.focus();
     };
 
 }
