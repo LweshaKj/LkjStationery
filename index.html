@@ -452,6 +452,19 @@
       }
           
       document.getElementById(id).style.display = 'block';
+      // Remove active class from all menu links
+      document.querySelectorAll(".navbar a").forEach(link => {
+          link.classList.remove("active");
+      });
+      
+      // Activate the clicked menu item
+      const activeLink = document.querySelector(
+          `.navbar a[onclick="showSection('${id}')"]`
+      );
+      
+      if (activeLink) {
+          activeLink.classList.add("active");
+      }
     
       if (id === 'viewProducts') {
     
