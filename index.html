@@ -552,10 +552,21 @@
           .then(data => {
           
               loader.style.display = 'none';
-          
-              const container = document.getElementById(containerId);
-          
-              container.innerHTML = '';
+                  const container = document.getElementById(containerId);
+            
+            if (containerId === "ourDesigns") {
+            
+                container.innerHTML = `
+                    <div class="section-title">
+                        <h3>Our Designs</h3>
+                    </div>
+                `;
+            
+            } else {
+            
+                container.innerHTML = '';
+            
+            }
           
               data.forEach(file => {
           
