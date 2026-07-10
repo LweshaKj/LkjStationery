@@ -429,9 +429,23 @@
   </main>
 
   <script>
-    const user = 'LweshaKj';
-    const repo = 'LkjStationery';
-    const branch = 'master';
+      const user = 'LweshaKj';
+      const repo = 'LkjStationery';
+      const branch = 'master';
+      
+      document.querySelectorAll('.navbar a').forEach(link => {
+      link.style.background = "";
+      link.style.fontWeight = "normal";
+  });
+  
+      const activeLink = document.querySelector(
+          `.navbar a[onclick="showSection('${id}')"]`
+      );
+      
+      if (activeLink) {
+          activeLink.style.background = "#2563eb";
+          activeLink.style.fontWeight = "bold";
+      }
 
     function toggleMenu() {
       document.querySelector('.navbar').classList.toggle('active');
