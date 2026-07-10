@@ -488,11 +488,15 @@
               });
           
               // These two lines belong here
-              document.getElementById("showingProducts").textContent =
-                  container.querySelectorAll(".product").length;
-          
-              enableSearch();
-          
+              if (containerId === "viewProducts") {
+              
+                  document.getElementById("showingProducts").textContent =
+                      container.querySelectorAll(".product").length;
+              
+                  enableSearch();
+              
+              }
+                        
           })
         .catch(() => {
           loader.style.display = 'none';
