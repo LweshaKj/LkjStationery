@@ -314,6 +314,16 @@
         width: 90%;
       }
     }
+        .section-title {
+        width:100%;
+        text-align:center;
+        margin-bottom:20px;
+    }
+    
+    .section-title h3 {
+        font-size:28px;
+        color:#1e293b;
+    }
     footer {
     background:#1e293b;
     color:white;
@@ -335,7 +345,7 @@
       <ul>
         <li><a href="#" onclick="showSection('dashboard')">Dashboard</a></li>
         <li><a href="#" onclick="showSection('viewProducts')">View Products</a></li>
-        <li><a href="#" onclick="showSection('viewLogos')">Our Designs</a></li>
+        <li><a href="#" onclick="showSection('ourDesigns')">Our Designs</a></li>
       </ul>
     </nav>
   </header>
@@ -468,11 +478,11 @@
 
 <!-- Products -->
     <section id="viewProducts" class="products" style="display:none"></section>
-    <section id="viewLogos" class="products" style="display:none">
-      <div>
+    <section id="ourDesigns" class="products" style="display:none">
+    <div class="section-title">
         <h3>Our Designs</h3>
-      </div>
-    </section>
+    </div>
+  </section>
   </main>
 
   <script>
@@ -522,12 +532,11 @@
     
       }
     
-        if (id === 'viewLogos') {
+        if (id === 'ourDesigns') {
         
-            fetchImages('logos', 'viewLogos');
+            fetchImages('designs', 'ourDesigns');
         
         }
-        
         // Close mobile menu
         document.querySelector(".navbar").classList.remove("active");
         
