@@ -535,8 +535,12 @@
 
         input.value="";
 
-        input.dispatchEvent(new Event("keyup"));
-
+        document.querySelectorAll("#viewProducts .product").forEach(product => {
+            product.style.display = "inline-block";
+        });
+        
+        document.getElementById("showingProducts").textContent =
+        document.querySelectorAll("#viewProducts .product").length;
     };
 
 }
