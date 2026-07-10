@@ -281,6 +281,14 @@
         width: 90%;
       }
     }
+    footer {
+    background:#1e293b;
+    color:white;
+    text-align:center;
+    padding:15px;
+    margin-top:30px;
+    font-size:14px;
+}
   </style>
 </head>
 <body>
@@ -585,6 +593,12 @@
 }
 
     window.onload = () => showSection('dashboard');
+    document.getElementById("year").textContent = new Date().getFullYear();
   </script>
+  <footer>
+  <p>
+    &copy; <span id="year"></span> LweshaKj's Stationery. All Rights Reserved.
+  </p>
+</footer>
 </body>
 </html>
