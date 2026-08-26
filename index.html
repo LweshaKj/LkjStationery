@@ -333,6 +333,130 @@
     margin-top:30px;
     font-size:14px;
 }
+    .notes-container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.notes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.note-card {
+    background: white;
+    border-radius: 10px;
+    padding: 18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    transition: .3s;
+}
+
+.note-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 18px rgba(0,0,0,.15);
+}
+
+.note-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.note-icon {
+    font-size: 35px;
+    color: #16a34a;
+}
+
+.note-name {
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.note-type {
+    color: #777;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.note-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.note-btn {
+    border: none;
+    padding: 10px 15px;
+    border-radius: 7px;
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+    transition: .3s;
+}
+
+.read-btn {
+    background: #2563eb;
+}
+
+.download-btn {
+    background: #16a34a;
+}
+
+.note-btn:hover {
+    transform: translateY(-2px);
+    opacity: .9;
+}
+
+.excel-preview {
+    margin-top: 25px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.1);
+    overflow-x: auto;
+}
+
+.excel-preview table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.excel-preview th,
+.excel-preview td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.excel-preview th {
+    background: #334155;
+    color: white;
+}
+
+@media(max-width:768px) {
+
+    .note-card {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .note-actions {
+        justify-content: center;
+    }
+
+    .note-btn {
+        flex: 1;
+        text-align: center;
+    }
+
+}
   </style>
 </head>
 <body>
