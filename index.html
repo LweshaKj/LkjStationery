@@ -6,7 +6,11 @@
   <title>LweshaKj</title>
   <!-- Font Awesome CDN for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+</script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js">
     function fetchExcelNotes() {
 
@@ -69,15 +73,14 @@
 
                     <div class="note-actions">
 
-                        <a
-                            class="note-btn read-btn"
-                            href="${file.download_url}"
-                            target="_blank">
-
-                            <i class="fas fa-book-open"></i>
-                            Read
-
-                        </a>
+                      <button
+                          class="note-btn read-btn"
+                          onclick="openPdfViewer('${file.download_url}', '${cleanName.replace(/'/g, "\\'")}')">
+                      
+                          <i class="fas fa-book-open"></i>
+                          Read
+                      
+                      </button>
 
                         <a
                             class="note-btn download-btn"
@@ -108,6 +111,199 @@
 
         });
 }
+    /* =========================
+   PDF VIEWER
+========================= */
+
+let pdfDocument = null;
+let currentPageNumber = 1;
+let pdfScale = 1.0;
+
+
+/* Open PDF */
+
+function openPdfViewer(url, title) {
+
+    const viewer = document.getElementById("pdfViewer");
+
+    viewer.classList.add("active");
+
+    document.getElementById("pdfTitle").textContent = title;
+
+    document.getElementById("pdfDownload").href = url;
+
+    document.getElementById("pdfDownload").download =
+        title + ".pdf";
+
+    currentPageNumber = 1;
+
+    pdfScale = 1.0;
+
+    updateZoomDisplay();
+
+    document.getElementById("pdfContainer").innerHTML = `
+        <canvas id="pdfCanvas"></canvas>
+    `;
+
+    pdfjsLib.getDocument(url).promise
+
+        .then(function(pdf) {
+
+            pdfDocument = pdf;
+
+            document.getElementById("totalPages").textContent =
+                pdf.numPages;
+
+            renderPage(currentPageNumber);
+
+        })
+
+        .catch(function(error) {
+
+            console.error(error);
+
+            alert(
+                "Unable to open this PDF. Please try downloading it instead."
+            );
+
+            closePdfViewer();
+
+        });
+
+}
+
+
+/* Render Page */
+
+function renderPage(pageNumber) {
+
+    if (!pdfDocument) return;
+
+    pdfDocument.getPage(pageNumber)
+
+        .then(function(page) {
+
+            const canvas =
+                document.getElementById("pdfCanvas");
+
+            const context =
+                canvas.getContext("2d");
+
+            const viewport =
+                page.getViewport({
+                    scale: pdfScale
+                });
+
+            canvas.width =
+                viewport.width;
+
+            canvas.height =
+                viewport.height;
+
+            const renderContext = {
+
+                canvasContext: context,
+
+                viewport: viewport
+
+            };
+
+            page.render(renderContext);
+
+            document.getElementById("currentPage").textContent =
+                pageNumber;
+
+                    });
+            
+            }
+            
+            
+            /* Previous Page */
+            
+            function previousPage() {
+            
+                if (!pdfDocument) return;
+            
+                if (currentPageNumber <= 1) return;
+            
+                currentPageNumber--;
+            
+                renderPage(currentPageNumber);
+            
+            }
+            
+            
+            /* Next Page */
+            
+            function nextPage() {
+            
+                if (!pdfDocument) return;
+            
+                if (currentPageNumber >= pdfDocument.numPages)
+                    return;
+            
+                currentPageNumber++;
+            
+                renderPage(currentPageNumber);
+            
+            }
+            
+            
+            /* Zoom In */
+            
+            function zoomIn() {
+            
+                if (!pdfDocument) return;
+            
+                if (pdfScale >= 3) return;
+            
+                pdfScale += 0.2;
+            
+                updateZoomDisplay();
+            
+                renderPage(currentPageNumber);
+            
+            }
+            
+            
+            /* Zoom Out */
+            
+            function zoomOut() {
+            
+                if (!pdfDocument) return;
+            
+                if (pdfScale <= 0.4) return;
+            
+                pdfScale -= 0.2;
+            
+                updateZoomDisplay();
+            
+                renderPage(currentPageNumber);
+            
+            }
+            
+            
+            /* Zoom Display */
+            
+            function updateZoomDisplay() {
+            
+                document.getElementById("zoomLevel").textContent =
+                    Math.round(pdfScale * 100) + "%";
+            
+            }
+            
+            
+            /* Close */
+            
+            function closePdfViewer() {
+            
+                document
+                    .getElementById("pdfViewer")
+                    .classList.remove("active");
+            
+                pdfDocument = null;
+            
+            }
   </script>
   <style>
     body {
@@ -558,6 +754,228 @@
     }
 
 }
+    /* =========================
+   PDF VIEWER
+========================= */
+
+.pdf-viewer {
+    position: fixed;
+    inset: 0;
+    background: #0f172a;
+    z-index: 99999;
+    display: none;
+    flex-direction: column;
+}
+
+.pdf-viewer.active {
+    display: flex;
+}
+
+
+/* Header */
+
+.pdf-header {
+    height: 60px;
+    background: #1e293b;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 20px;
+
+    box-shadow: 0 2px 10px rgba(0,0,0,.4);
+}
+
+.pdf-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.pdf-title i {
+    color: #ef4444;
+    font-size: 22px;
+}
+
+
+.pdf-close {
+    border: none;
+    background: transparent;
+    color: white;
+
+    font-size: 24px;
+
+    cursor: pointer;
+
+    width: 40px;
+    height: 40px;
+
+    border-radius: 50%;
+}
+
+.pdf-close:hover {
+    background: #ef4444;
+}
+
+
+/* Toolbar */
+
+.pdf-toolbar {
+    min-height: 55px;
+
+    background: #334155;
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 8px 15px;
+
+    flex-wrap: wrap;
+}
+
+
+.pdf-toolbar button {
+    border: none;
+
+    background: #475569;
+
+    color: white;
+
+    width: 40px;
+    height: 38px;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    font-size: 16px;
+}
+
+.pdf-toolbar button:hover {
+    background: #2563eb;
+}
+
+
+.page-info {
+    min-width: 90px;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+#zoomLevel {
+    min-width: 55px;
+    text-align: center;
+}
+
+
+.toolbar-divider {
+    width: 1px;
+    height: 28px;
+    background: #64748b;
+    margin: 0 5px;
+}
+
+
+/* Download */
+
+.pdf-download {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    background: #16a34a;
+
+    color: white;
+
+    text-decoration: none;
+
+    padding: 9px 14px;
+
+    border-radius: 6px;
+
+    font-weight: bold;
+}
+
+.pdf-download:hover {
+    background: #15803d;
+}
+
+
+/* PDF Area */
+
+.pdf-container {
+    flex: 1;
+
+    overflow: auto;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    padding: 30px;
+
+    background: #0f172a;
+}
+
+
+#pdfCanvas {
+    background: white;
+
+    box-shadow:
+        0 5px 25px rgba(0,0,0,.5);
+
+    max-width: none;
+}
+
+
+/* Mobile */
+
+@media(max-width:768px) {
+
+    .pdf-header {
+        height: 55px;
+        padding: 0 12px;
+    }
+
+    .pdf-title {
+        font-size: 14px;
+        max-width: 75%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .pdf-toolbar {
+        gap: 6px;
+        padding: 7px;
+    }
+
+    .pdf-toolbar button {
+        width: 36px;
+        height: 36px;
+    }
+
+    .pdf-download {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+
+    .pdf-container {
+        padding: 15px 5px;
+    }
+
+}
   </style>
 </head>
 <body>
@@ -909,5 +1327,78 @@
   <script> 
     document.getElementById("year").textContent = new Date().getFullYear();
 </script>
+  <!-- PDF VIEWER -->
+
+<div id="pdfViewer" class="pdf-viewer">
+
+    <div class="pdf-header">
+
+        <div class="pdf-title">
+            <i class="fas fa-file-pdf"></i>
+            <span id="pdfTitle">PDF Notes</span>
+        </div>
+
+        <button class="pdf-close" onclick="closePdfViewer()">
+            <i class="fas fa-times"></i>
+        </button>
+
+    </div>
+
+
+    <div class="pdf-toolbar">
+
+        <button onclick="previousPage()" title="Previous Page">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+
+        <span class="page-info">
+            Page
+            <span id="currentPage">1</span>
+            /
+            <span id="totalPages">0</span>
+        </span>
+
+        <button onclick="nextPage()" title="Next Page">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+
+
+        <span class="toolbar-divider"></span>
+
+
+        <button onclick="zoomOut()" title="Zoom Out">
+            <i class="fas fa-search-minus"></i>
+        </button>
+
+        <span id="zoomLevel">100%</span>
+
+        <button onclick="zoomIn()" title="Zoom In">
+            <i class="fas fa-search-plus"></i>
+        </button>
+
+
+        <span class="toolbar-divider"></span>
+
+
+        <a id="pdfDownload"
+           class="pdf-download"
+           href="#"
+           download>
+
+            <i class="fas fa-download"></i>
+            Download
+
+        </a>
+
+    </div>
+
+
+    <div id="pdfContainer" class="pdf-container">
+
+        <canvas id="pdfCanvas"></canvas>
+
+    </div>
+
+</div>
 </body>
 </html>
