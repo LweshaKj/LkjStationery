@@ -1158,96 +1158,93 @@ function fetchExcelNotes() {
           /* OPEN PDF */
           
           function openPdfViewer(url, title) {
-          
-              const viewer =
-                  document.getElementById("pdfViewer");
-          
-              viewer.classList.add("active");
-          
-              document.getElementById("pdfTitle")
-                  .textContent = title;
-          
-              document.getElementById("pdfDownload")
-                  .href = url;
-          
-              document.getElementById("pdfDownload")
-                  .setAttribute("download", title + ".pdf");
-          
-              currentPageNumber = 1;
-          
-              pdfScale = 1.0;
-          
-              updateZoomDisplay();
-          
-              pdfDocument = null;
-          
-              document.getElementById("currentPage")
-                  .textContent = "1";
-          
-              document.getElementById("totalPages")
-                  .textContent = "0";
-          
-          
-              const container =
-                  document.getElementById("pdfContainer");
-          
-              container.innerHTML = `
-                  <div class="spinner"></div>
-              `;
-          
-          
-              pdfjsLib.getDocument({
-                  url: url
-              }).promise
-          
-                  .then(function(pdf) {
-          
-                      pdfDocument = pdf;
-          
-                      document.getElementById("totalPages")
-                          .textContent = pdf.numPages;
-          
-                      container.innerHTML = `
-                          <canvas id="pdfCanvas"></canvas>
-                      `;
-          
-                      renderPage(currentPageNumber);
-          
-                  })
-          
-                  .catch(function(error) {
-          
-                      console.error("PDF ERROR:", error);
-          
-                      container.innerHTML = `
-                          <div style="
-                              color:white;
-                              text-align:center;
-                              padding:40px;
-                          ">
-          
-                              <i
-                                  class="fas fa-exclamation-triangle"
-                                  style="
-                                      font-size:40px;
-                                      color:#ef4444;
-                                  ">
-                              </i>
-          
-                              <h3>
-                                  Unable to open this PDF
-                              </h3>
-          
-                              <p>
-                                  Please try downloading the file.
-                              </p>
-          
-                          </div>
-                      `;
-          
-                  });
-          
-          }
+
+    const viewer = document.getElementById("pdfViewer");
+
+    viewer.classList.add("active");
+
+    document.getElementById("pdfTitle").textContent = title;
+
+    document.getElementById("pdfDownload").href = url;
+    document.getElementById("pdfDownload").download = title + ".pdf";
+
+    currentPageNumber = 1;
+    pdfScale = 1.0;
+    pdfDocument = null;
+
+    updateZoomDisplay();
+
+    document.getElementById("currentPage").textContent = "1";
+    document.getElementById("totalPages").textContent = "0";
+
+    const container = document.getElementById("pdfContainer");
+
+    container.innerHTML = `
+        <div class="spinner"></div>
+    `;
+
+    pdfjsLib.getDocument({
+        url: url,
+        withCredentials: false
+    }).promise
+
+    .then(function(pdf) {
+
+        pdfDocument = pdf;
+
+        document.getElementById("totalPages").textContent =
+            pdf.numPages;
+
+        container.innerHTML = `
+            <canvas id="pdfCanvas"></canvas>
+        `;
+
+        renderPage(currentPageNumber);
+
+    })
+
+    .catch(function(error) {
+
+        console.error("PDF ERROR:", error);
+
+        container.innerHTML = `
+            <div style="
+                color:white;
+                text-align:center;
+                padding:40px;
+            ">
+
+                <i class="fas fa-exclamation-triangle"
+                   style="
+                       font-size:40px;
+                       color:#ef4444;
+                   ">
+                </i>
+
+                <h3>Unable to open this PDF</h3>
+
+                <p>
+                    The PDF could not be displayed.
+                </p>
+
+                <a href="${url}"
+                   target="_blank"
+                   style="
+                       color:white;
+                       background:#2563eb;
+                       padding:10px 20px;
+                       border-radius:6px;
+                       text-decoration:none;
+                       display:inline-block;
+                   ">
+                    Open PDF
+                </a>
+
+            </div>
+        `;
+
+    });
+}
           
           
           /* RENDER PAGE */
