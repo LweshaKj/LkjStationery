@@ -861,11 +861,18 @@ function readExcelNote(url, title) {
     
       }
     
-        if (id === 'ourDesigns') {
-        
-            fetchImages('logos', 'ourDesigns');
-        
-        }
+       if (id === 'ourDesigns') {
+
+    fetchImages('logos', 'ourDesigns');
+
+      }
+      
+      if (id === 'excelNotes') {
+      
+      fetchExcelNotes();
+      
+      }
+      
         // Close mobile menu
         document.querySelector(".navbar").classList.remove("active");
         
