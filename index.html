@@ -24,12 +24,12 @@
 
             container.innerHTML = "";
 
-            const excelFiles = data.filter(file =>
+            const pdfFiles = data.filter(file =>
                 file.type === "file" &&
-                /\.(xlsx|xls|csv)$/i.test(file.name)
+                /\.pdf$/i.test(file.name)
             );
 
-            if (excelFiles.length === 0) {
+            if (pdfFiles.length === 0) {
 
                 container.innerHTML =
                     "<p style='text-align:center;'>No Excel notes available.</p>";
@@ -37,20 +37,20 @@
                 return;
             }
 
-            excelFiles.forEach(file => {
+            pdfFiles.forEach(file => {
 
                 const card = document.createElement("div");
 
                 card.className = "note-card";
 
                 const cleanName =
-                    file.name.replace(/\.(xlsx|xls|csv)$/i, "");
+                    file.name.replace(/\.pdf$/i, "");
 
                 card.innerHTML = `
 
                     <div class="note-info">
 
-                        <i class="fas fa-file-excel note-icon"></i>
+                        <i class="fas fa-file-pdf note-icon"></i>
 
                         <div>
 
@@ -59,7 +59,7 @@
                             </div>
 
                             <div class="note-type">
-                                ${file.name.split('.').pop().toUpperCase()} file
+                                PDF Note
                             </div>
 
                         </div>
@@ -68,14 +68,15 @@
 
                     <div class="note-actions">
 
-                        <button
+                        <a
                             class="note-btn read-btn"
-                            onclick="readExcelNote('${file.download_url}', '${cleanName.replace(/'/g, "\\'")}')">
+                            href="${file.download_url}"
+                            target="_blank">
 
                             <i class="fas fa-book-open"></i>
                             Read
 
-                        </button>
+                        </a>
 
                         <a
                             class="note-btn download-btn"
@@ -103,97 +104,6 @@
 
             container.innerHTML =
                 "<p style='text-align:center;color:red;'>Unable to load Excel notes.</p>";
-
-        });
-}
-
-
-function readExcelNote(url, title) {
-
-    const container = document.getElementById("notesList");
-
-    container.innerHTML =
-        '<div class="spinner"></div>';
-
-    fetch(url)
-
-        .then(response => response.arrayBuffer())
-
-        .then(data => {
-
-            const workbook =
-                XLSX.read(data, { type: "array" });
-
-            let html = `
-                <div class="excel-preview">
-
-                    <h3>
-                        <i class="fas fa-file-excel"></i>
-                        ${title}
-                    </h3>
-            `;
-
-            workbook.SheetNames.forEach(sheetName => {
-
-                const worksheet =
-                    workbook.Sheets[sheetName];
-
-                const table =
-                    XLSX.utils.sheet_to_html(worksheet);
-
-                html += `
-
-                    <h4>
-                        ${sheetName}
-                    </h4>
-
-                    ${table}
-
-                `;
-
-            });
-
-            html += `
-
-                <br>
-
-                <button
-                    class="note-btn read-btn"
-                    onclick="fetchExcelNotes()">
-
-                    <i class="fas fa-arrow-left"></i>
-                    Back to Notes
-
-                </button>
-
-            </div>
-            `;
-
-            container.innerHTML = html;
-
-        })
-
-        .catch(error => {
-
-            console.error(error);
-
-            container.innerHTML = `
-                <div class="excel-preview">
-
-                    <p style="color:red;">
-                        Unable to read this Excel file.
-                    </p>
-
-                    <button
-                        class="note-btn read-btn"
-                        onclick="fetchExcelNotes()">
-
-                        Back to Notes
-
-                    </button>
-
-                </div>
-            `;
 
         });
 }
@@ -561,9 +471,8 @@ function readExcelNote(url, title) {
 
 .note-icon {
     font-size: 35px;
-    color: #16a34a;
+    color: #dc2626;
 }
-
 .note-name {
     font-weight: bold;
     font-size: 17px;
@@ -662,7 +571,7 @@ function readExcelNote(url, title) {
         <li><a href="#" onclick="showSection('dashboard')"><i class="fas fa-tachometer-alt"></i>&nbsp;Dashboard</a></li>
         <li><a href="#" onclick="showSection('viewProducts')"><i class="fas fa-shopping-basket"></i>&nbsp;View Products</a></li>
         <li><a href="#" onclick="showSection('ourDesigns')"><i class="fas fa-palette"></i>&nbsp;Our Designs</a></li>
-        <li><a href="#" onclick="showSection('excelNotes')"><i class="fas fa-file-excel"></i>&nbsp;Excel Notes</a></li>
+        <li><a href="#" onclick="showSection('excelNotes')"><i class="fas fa-file-pdf"></i>&nbsp;Excel Notes</a></li>
       </ul>
     </nav>
   </header>
@@ -803,8 +712,8 @@ function readExcelNote(url, title) {
     <section id="excelNotes" class="notes-container" style="display:none">
 
   <div class="section-title">
-    <h3><i class="fas fa-file-excel"></i> Excel Notes</h3>
-    <p>Read or download our Excel learning notes.</p>
+    <h3><i class="fas fa-file-pdf"></i> Excel Notes</h3>
+    <p>Read or download our Excel notes.</p>
   </div>
 
   <div id="notesList" class="notes-list">
